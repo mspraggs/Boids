@@ -11,15 +11,15 @@ class SwarmApplication : public QGuiApplication
 {
 
 public:
-  explicit SwarmApplication(std::vector<boids::Boid>& swarm,
+  explicit SwarmApplication(std::vector<boids::Boid>& swarm_,
 			    int argc, char* argv[])
-    : QGuiApplication(argc, argv), _swarm(swarm)
+    : QGuiApplication(argc, argv), swarm(swarm_)
   { self = this; }
 
   static SwarmApplication* instance()
   { return static_cast<SwarmApplication*>(self); }
 
-  std::vector<boids::Boid> _swarm;
+  std::vector<boids::Boid> swarm;
 
 private:
   static SwarmApplication* self;
