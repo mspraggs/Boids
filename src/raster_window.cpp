@@ -48,8 +48,6 @@ void RasterWindow::renderNow()
 
   this->_backing_store->endPaint();
   this->_backing_store->flush(rect);
-
-  SwarmApplication::instance()->_swarm[0];
 }
 
 
