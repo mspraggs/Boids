@@ -4,6 +4,9 @@
 
 #include <boid.hpp>
 #include <raster_window.hpp>
+#include <swarm_application.hpp>
+
+SwarmApplication* SwarmApplication::self = 0;
 
 std::vector<boids::Boid> create_swarm()
 {
@@ -40,7 +43,9 @@ std::vector<boids::Boid> create_swarm()
 
 int main(int argc, char* argv[])
 {
-  QGuiApplication app(argc, argv);
+  std::vector<boids::Boid> swarm = create_swarm();
+
+  SwarmApplication app(swarm, argc, argv);
   RasterWindow win;
   win.show();
   return app.exec();

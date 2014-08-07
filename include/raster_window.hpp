@@ -3,6 +3,8 @@
 
 #include <QtGui>
 
+#include <swarm_application.hpp>
+
 class RasterWindow : public QWindow
 {
 
