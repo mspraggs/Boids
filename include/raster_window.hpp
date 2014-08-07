@@ -17,6 +17,8 @@ public slots:
   void renderLater();
   void renderNow();
 
+  void updateSwarm();
+
 protected:
   bool event(QEvent* event);
 

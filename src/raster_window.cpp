@@ -52,6 +52,16 @@ void RasterWindow::renderNow()
 
 
 
+void RasterWindow::updateSwarm()
+{
+  for (boids::Boid& boid : SwarmApplication::instance()->swarm)
+    boid.step_setup(SwarmApplication::instance()->swarm);
+  for (boids::Boid& boid : SwarmApplication::instance()->swarm)
+    boid.step(0.01);
+}
+
+
+
 bool RasterWindow::event(QEvent* event)
 {
   if (event->type() == QEvent::UpdateRequest) {
