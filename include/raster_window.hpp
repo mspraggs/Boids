@@ -26,6 +26,8 @@ protected:
 private:
   QBackingStore* _backing_store;
   bool _update_pending;
+
+  QTimer* _timer;
 };
 
 #endif

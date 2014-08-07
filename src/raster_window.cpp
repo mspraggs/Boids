@@ -4,6 +4,10 @@ RasterWindow::RasterWindow(QWindow *parent)
   : QWindow(parent), _update_pending(false)
 {
   this->_backing_store = new QBackingStore(this);
+
+  this->_timer = new QTimer(this);
+  this->_timer->start();
+
   this->create();
   this->setGeometry(100, 100, 300, 200);
 }
@@ -44,6 +48,8 @@ void RasterWindow::renderNow()
 
   this->_backing_store->endPaint();
   this->_backing_store->flush(rect);
+
+  SwarmApplication::instance()->_swarm[0];
 }
 
 
