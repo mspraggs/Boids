@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Gui REQUIRED)
 
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -O3")
+set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -O3 -fPIC")
 
 set (SRC_DIR ${PROJECT_BINARY_DIR}/src)
 set (INC_DIR ${PROJECT_BINARY_DIR}/include)
@@ -20,7 +20,8 @@ file (GLOB
 
 file (GLOB
   exec_SRC
-  ${SRC_DIR}/main.cpp)
+  ${SRC_DIR}/main.cpp
+  ${SRC_DIR}/raster_window.cpp)
 
 file (GLOB
   test_SRC
@@ -28,14 +29,14 @@ file (GLOB
   ${PROJECT_BINARY_DIR}
   ${TEST_DIR}/*.cpp)
 
-include_directories (${INC_DIR})
+include_directories (${INC_DIR} ${Qt5Gui_INCLUDE_DIRS})
 
 add_library (boids-lib SHARED ${lib_SRC})
 target_link_libraries (boids-lib)
 set_target_properties(boids-lib PROPERTIES OUTPUT_NAME boids)
 
 add_executable (boids ${exec_SRC})
-target_link_libraries (boids boids-lib)
+target_link_libraries (boids boids-lib ${Qt5Gui_LIBRARIES})
 
 foreach ( testsourcefile ${test_SRC} )
   string( REPLACE ".cpp" "" testname ${testsourcefile} )
