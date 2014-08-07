@@ -8,7 +8,7 @@ RasterWindow::RasterWindow(QWindow *parent)
   this->_timer.start(10, this);
 
   this->create();
-  this->setGeometry(100, 100, 300, 200);
+  this->setGeometry(100, 100, 480, 480);
 }
 
 
