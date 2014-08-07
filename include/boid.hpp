@@ -6,7 +6,6 @@
 #include <vector>
 
 #include <utils.hpp>
-#include <swarm.hpp>
 
 namespace boids
 {
