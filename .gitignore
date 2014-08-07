@@ -1,3 +1,17 @@
+# CMake stuff
+CMakeCache.txt
+CTestTestfile.cmake
+cmake_install.cmake
+CMakeFiles/*
+Makefile
+
+# Emacs files
+*~
+
+# Performance/benchmarking stuff
+perf.*
+*grind.*.out
+
 # Compiled Object files
 *.slo
 *.lo
@@ -19,3 +33,4 @@
 *.exe
 *.out
 *.app
+boids
