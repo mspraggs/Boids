@@ -5,8 +5,7 @@ RasterWindow::RasterWindow(QWindow *parent)
 {
   this->_backing_store = new QBackingStore(this);
 
-  this->_timer = new QTimer(this);
-  this->_timer->start();
+  this->_timer.start(10, this);
 
   this->create();
   this->setGeometry(100, 100, 300, 200);
@@ -87,4 +86,14 @@ void RasterWindow::exposeEvent(QExposeEvent* event)
 {
   if (this->isExposed())
     this->renderNow();
+}
+
+
+
+void RasterWindow::timerEvent(QTimerEvent* event)
+{
+  if (event->timerId() == this->_timer.timerId())
+    this->updateSwarm();
+  else
+    QWindow::timerEvent(event);
 }

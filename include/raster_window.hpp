@@ -24,12 +24,15 @@ protected:
 
   void resizeEvent(QResizeEvent* event);
   void exposeEvent(QExposeEvent* event);
+  void timerEvent(QTimerEvent* event);
 
 private:
+  void drawSwarm();
+
   QBackingStore* _backing_store;
   bool _update_pending;
 
-  QTimer* _timer;
+  QBasicTimer _timer;
 };
 
 #endif
