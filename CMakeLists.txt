@@ -1,8 +1,11 @@
-cmake_minimum_required (VERSION 2.8.8)
+cmake_minimum_required (VERSION 2.8.11)
 enable_testing()
 project (boids)
 
-set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+
+find_package(Qt5Gui REQUIRED)
 
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -O3")
 
@@ -24,13 +27,6 @@ file (GLOB
   RELATIVE
   ${PROJECT_BINARY_DIR}
   ${TEST_DIR}/*.cpp)
-
-if (OPENMP_FOUND)
-  message ("OpenMP found")
-  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif()
 
 include_directories (${INC_DIR})
 
