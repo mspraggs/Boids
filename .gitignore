@@ -1,3 +1,5 @@
+/boids-lib_automoc.cpp
+/boids_automoc.cpp
 # CMake stuff
 CMakeCache.txt
 CTestTestfile.cmake
