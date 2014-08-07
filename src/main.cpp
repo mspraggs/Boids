@@ -1,8 +1,11 @@
 #include <random>
 
-#include <boid.hpp>
+#include <QtGui>
 
-int main(int argc, char* argv[])
+#include <boid.hpp>
+#include <raster_window.hpp>
+
+std::vector<boids::Boid> create_swarm()
 {
   // RNG
   std::random_device rd;
@@ -20,7 +23,6 @@ int main(int argc, char* argv[])
   double align_max = 5 * boids::math::pi / 180;
   double separate_max = 3 * boids::math::pi / 180;
   double cohese_max = 1.5 * boids::math::pi / 180;
-  double dt = 1.0;
   
   // Initialize boids
   std::vector<boids::Boid> swarm;
@@ -33,14 +35,13 @@ int main(int argc, char* argv[])
 				separate_max, i));
   }
 
-  int cycle_count = 0;
-  while (true) {
-    for (auto& boid : swarm)
-      boid.step_setup(swarm);
-    for (auto& boid : swarm)
-      boid.step(dt);
-    cycle_count++;
-  }
+  return swarm;
+}
 
-  return 0;
+int main(int argc, char* argv[])
+{
+  QGuiApplication app(argc, argv);
+  RasterWindow win;
+  win.show();
+  return app.exec();
 }
