@@ -33,6 +33,7 @@ private:
   bool _update_pending;
 
   QBasicTimer _timer;
+  QPolygonF _boid_poly;
 };
 
 #endif
