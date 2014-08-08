@@ -25,6 +25,14 @@ namespace boids
     void step_setup(const std::vector<Boid>& swarm);
     void step(const double dt);
 
+    const double r_x() const { return this->_r_x; } 
+    const double r_y() const { return this->_r_y; }
+    const double v_theta() const;
+    const std::vector<double>& x_range() const { return this->_x_range; }
+    const std::vector<double>& y_range() const { return this->_y_range; }
+    const double x_span() const { return this->_x_span; }
+    const double y_span() const { return this->_y_span; }
+
   private:
     const double point_heading(const double x, const double y) const;
     const double neighbour_distance(const Boid& boid) const;
@@ -38,7 +46,6 @@ namespace boids
     const double correct_y(const double y) const;
     const double v_mag() const
     { return math::magnitude(this->_v_x, this->_v_y); }
-    const double v_theta() const;
     const double r_theta() const;
 
     double _r_x, _r_y, _v_x, _v_y, _v_mag;
