@@ -76,14 +76,13 @@ namespace boids
       int nearest_neighbour = -1;
       double min_dist = this->_x_span + this->_y_span;
       for (int i : neighbours) {
-	double current_neighbour_distance = this->neighbour_distance(swarm[i]);
-	if (current_neighbour_distance < min_dist) {
+	if (this->neighbour_distance(swarm[i]) < min_dist) {
 	  nearest_neighbour = i;
-	  min_dist = current_neighbour_distance;
+	  min_dist = this->neighbour_distance(swarm[i]);
 	}
       }
 
-      if (min_dist < this->_min_dist) {
+      if (min_dist > this->_min_dist) {
 	double net_dx = 0.0;
 	double net_dy = 0.0;
 	double avg_x = 0.0;
@@ -111,13 +110,15 @@ namespace boids
       }
       else {
 	double neighbour_heading
-	  = swarm[nearest_neighbour].v_theta() - this->v_theta();
+	  = this->neighbour_heading(swarm[nearest_neighbour]);
 	this->_dtheta
 	  = (this->_separate_max < fabs(neighbour_heading))
 	  ? math::sgn(neighbour_heading) * this->_separate_max
 	  : neighbour_heading;
       }
     }
+    else
+      this->_dtheta = 0.0;
   }
 
 
