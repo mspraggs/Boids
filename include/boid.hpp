@@ -32,6 +32,8 @@ namespace boids
     const std::vector<double>& y_range() const { return this->_y_range; }
     const double x_span() const { return this->_x_span; }
     const double y_span() const { return this->_y_span; }
+    const double min_dist() const { return this->_min_dist; }
+    const double sight_range() const { return this->_sight_range; }
 
   private:
     const double point_heading(const double x, const double y) const;
