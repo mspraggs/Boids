@@ -7,7 +7,12 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Gui REQUIRED)
 
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -O3 -fPIC")
+if (CMAKE_COMPILER_IS_GNUCXX)
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -O3 -fPIC")
+endif ()
+if (CMAKE_COMPILER_IS_MSVC)
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O2 /Wall")
+endif ()
 
 set (SRC_DIR ${PROJECT_BINARY_DIR}/src)
 set (INC_DIR ${PROJECT_BINARY_DIR}/include)
@@ -44,4 +49,3 @@ foreach ( testsourcefile ${test_SRC} )
   target_link_libraries( ${testname} ${Boost_LIBRARIES} boids)
   add_test( NAME ${testname} COMMAND ${testname} --log_level=all)
 endforeach ( testsourcefile ${test_SRC} )
-
