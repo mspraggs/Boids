@@ -28,6 +28,8 @@ protected:
 
 private:
   void drawSwarm();
+  void drawViewRange(QPainter* painter, const boids::Boid& boid,
+		     const double angle, const double range);
 
   QBackingStore* _backing_store;
   bool _update_pending;
