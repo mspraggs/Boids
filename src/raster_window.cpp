@@ -28,7 +28,7 @@ void RasterWindow::render(QPainter* painter)
 
   painter->translate(this->width() / 2, this->height() / 2);
   painter->scale(xscale, -yscale);
-  QBrush brush(Qt::SolidPattern);
+  QBrush brush(Qt::black);
   painter->setPen(QPen(brush, 0.5));
 
   for (boids::Boid& boid : swarm) {
@@ -40,14 +40,14 @@ void RasterWindow::render(QPainter* painter)
     boid_poly = translate.map(boid_poly);
     QPainterPath path;
     path.addPolygon(boid_poly);
+    painter->setPen(QColor(Qt::black));
     painter->drawPolygon(boid_poly);
     painter->fillPath(path, brush);
-    painter->drawEllipse(QPointF(boid.r_x(), boid.r_y()),
-			 boid.sight_range(),
-			 boid.sight_range());
-    painter->drawEllipse(QPointF(boid.r_x(), boid.r_y()),
-			 boid.min_dist(),
-			 boid.min_dist());
+    
+    painter->setPen(QPen(QBrush(Qt::blue), 0.5));
+    this->drawViewRange(painter, boid, boid.view_angle(), boid.sight_range());
+    painter->setPen(QPen(QBrush(Qt::red), 0.5));
+    this->drawViewRange(painter, boid, boid.view_angle(), boid.min_dist());
   }
 }
 
