@@ -34,6 +34,7 @@ namespace boids
     const double y_span() const { return this->_y_span; }
     const double min_dist() const { return this->_min_dist; }
     const double sight_range() const { return this->_sight_range; }
+    const double view_angle() const { return this->_view_angle; }
 
   private:
     const double point_heading(const double x, const double y) const;
