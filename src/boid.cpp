@@ -177,7 +177,7 @@ namespace boids
   {
     // Determines whether the supplied boid is in the fov of this boid
     return (this->neighbour_distance(boid) < this->_sight_range
-	    && fabs(this->neighbour_heading(boid) < this->_view_angle));
+	    && fabs(this->neighbour_heading(boid)) < this->_view_angle);
   }
 
 
