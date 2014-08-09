@@ -17,8 +17,14 @@ std::vector<boids::Boid> create_swarm()
 
   // World parameters
   int num_boids = 100;
+#ifdef _MSC_VER
+  double range[] = {-200.0, 200.0};
+  std::vector<double> x_range(range, range + 2);
+  std::vector<double> y_range(range, range + 2);
+#else
   std::vector<double> x_range{-200.0, 200.0};
   std::vector<double> y_range{-200.0, 200.0};
+#endif
   double v_mag = 100.0;
   double sight_range = 20.0;
   double min_dist = 10.0;

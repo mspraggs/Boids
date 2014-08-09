@@ -36,12 +36,18 @@ file (GLOB
 
 include_directories (${INC_DIR} ${Qt5Gui_INCLUDE_DIRS})
 
-add_library (boids-lib SHARED ${lib_SRC})
-target_link_libraries (boids-lib)
-set_target_properties(boids-lib PROPERTIES OUTPUT_NAME boids)
+add_library (boids-core OBJECT ${lib_SRC})
+
+add_library (boids-shared SHARED $<TARGET_OBJECTS:boids-core>)
+target_link_libraries (boids-shared)
+set_target_properties(boids-shared PROPERTIES OUTPUT_NAME boids)
+
+add_library (boids-static STATIC $<TARGET_OBJECTS:boids-core>)
+target_link_libraries (boids-static)
+set_target_properties(boids-static PROPERTIES OUTPUT_NAME boids)
 
 add_executable (boids ${exec_SRC})
-target_link_libraries (boids boids-lib ${Qt5Gui_LIBRARIES})
+target_link_libraries (boids boids-shared ${Qt5Gui_LIBRARIES})
 
 foreach ( testsourcefile ${test_SRC} )
   string( REPLACE ".cpp" "" testname ${testsourcefile} )
