@@ -1,3 +1,6 @@
+/boids-core_automoc.cpp
+/boids-shared_automoc.cpp
+/boids-static_automoc.cpp
 /boids-lib_automoc.cpp
 /boids_automoc.cpp
 # CMake stuff
