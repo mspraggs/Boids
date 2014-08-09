@@ -17,11 +17,11 @@ std::vector<boids::Boid> create_swarm()
 
   // World parameters
   int num_boids = 100;
-  std::vector<double> x_range{-0.7, 0.7};
-  std::vector<double> y_range{-0.7, 0.7};
-  double v_mag = 0.01;
-  double sight_range = 0.15;
-  double min_dist = 0.05;
+  std::vector<double> x_range{-200.0, 200.0};
+  std::vector<double> y_range{-200.0, 200.0};
+  double v_mag = 100.0;
+  double sight_range = 20.0;
+  double min_dist = 10.0;
   double view_angle = 135 * boids::math::pi / 180;
   double align_max = 5 * boids::math::pi / 180;
   double separate_max = 3 * boids::math::pi / 180;
