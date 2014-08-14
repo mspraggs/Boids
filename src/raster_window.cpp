@@ -139,7 +139,7 @@ void RasterWindow::drawViewRange(QPainter* painter, const boids::Boid& boid,
 {  
   QRectF rect(boid.r_x() - range, boid.r_y() - range, 2 * range, 2 * range);
   painter->drawPie(rect,
-		   -16 * 180.0 / boids::math::pi
-		   * (boid.v_theta() - angle - boids::math::pi / 2),
+		   - 16 * 180.0 / boids::math::pi
+		   * (angle + boid.v_theta()),
 		   16 * 180.0 / boids::math::pi * 2 * angle);
 }
