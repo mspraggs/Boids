@@ -30,7 +30,7 @@ is by using Visual Studio (the express edition is free). Once you've downloaded
 this and the above packages do the following:
 
 1. Install Visual Studio.
-2. Install Qt. Make sure to select the package in the list you're given that best matches the version of Visual Studio you're using (i.e. version number, 32/65 bit etc.)
+2. Install Qt. Make sure to select the package in the list you're given that best matches the version of Visual Studio you're using (i.e. version number, 32/64 bit etc.)
 3. Install CMake.
 4. Run CMake. Select the source folder and specify an output binary folder. Hit generate and a dialogue should appear. Select the Visual Studio version that most closely matches the one you installed then hit ok.
 5. CMake will probably fail to find Qt at this point, so in the empty field next to the variable that isn't set, specify the path to the cmake folder in Qt (usually this looks something like C:\Path\To\Qt\5.3\msvcXXXX\lib\cmake\Qt5Gui). You might need to adjust the last folder in this path to point to the library the variable corresponds to. Again msvcXXXX should roughly match the version of Visual Studio you're using.
