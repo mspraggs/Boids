@@ -3,14 +3,14 @@
 namespace boids
 {
   Boid::Boid(const double x, const double y, const double heading,
-	     const double v_mag, const std::vector<double>& x_range,
-	     const std::vector<double>& y_range, const double sight_range,
-	     const double min_dist, const double view_angle,
-	     const double align_max, const double cohese_max,
-	     const double separate_max, const int index)
+             const double v_mag, const std::vector<double>& x_range,
+             const std::vector<double>& y_range, const double sight_range,
+             const double min_dist, const double view_angle,
+             const double align_max, const double cohese_max,
+             const double separate_max, const int index)
     : _r_x(x), _r_y(y), _v_mag(v_mag), _x_range(x_range), _y_range(y_range),
       _sight_range(sight_range), _min_dist(min_dist), _view_angle(view_angle),
-      _align_max(align_max), _cohese_max(cohese_max),
+    _align_max(align_max), _cohese_max(cohese_max),
     _separate_max(separate_max), _index(index)
   {
     this->_x_span = x_range[1] - x_range[0];
@@ -76,45 +76,45 @@ namespace boids
       int nearest_neighbour = -1;
       double min_dist = this->_x_span + this->_y_span;
       for (int i : neighbours) {
-	if (this->neighbour_distance(swarm[i]) < min_dist) {
-	  nearest_neighbour = i;
-	  min_dist = this->neighbour_distance(swarm[i]);
-	}
+        if (this->neighbour_distance(swarm[i]) < min_dist) {
+          nearest_neighbour = i;
+          min_dist = this->neighbour_distance(swarm[i]);
+        }
       }
-
+      
       if (min_dist > this->_min_dist) {
-	double net_dx = 0.0;
-	double net_dy = 0.0;
-	double avg_x = 0.0;
-	double avg_y = 0.0;
-
-	for (int i : neighbours) {
-	  net_dx += swarm[i]._v_x / swarm[i].v_mag();
-	  net_dy += swarm[i]._v_y / swarm[i].v_mag();
-	  avg_x += swarm[i]._r_x;
-	  avg_y += swarm[i]._r_y;
-	}
-	double phi = compute_phi(net_dx, net_dy) - this->v_theta();
-	avg_x /= neighbours.size();
-	avg_y /= neighbours.size();
-	double avg_heading = this->point_heading(avg_x, avg_y);
-	double alignment
-	  = (this->_align_max < fabs(phi))
-	  ? math::sgn(phi) * this->_align_max
-	  : phi;
-	double cohesion
-	  = (this->_cohese_max < fabs(avg_heading))
-	  ? math::sgn(avg_heading) * this->_cohese_max
-	  : avg_heading;
-	this->_dtheta = cohesion + alignment;
+        double net_dx = 0.0;
+        double net_dy = 0.0;
+        double avg_x = 0.0;
+        double avg_y = 0.0;
+        
+        for (int i : neighbours) {
+          net_dx += swarm[i]._v_x / swarm[i].v_mag();
+          net_dy += swarm[i]._v_y / swarm[i].v_mag();
+          avg_x += swarm[i]._r_x;
+          avg_y += swarm[i]._r_y;
+        }
+        double phi = compute_phi(net_dx, net_dy) - this->v_theta();
+        avg_x /= neighbours.size();
+        avg_y /= neighbours.size();
+        double avg_heading = this->point_heading(avg_x, avg_y);
+        double alignment
+          = (this->_align_max < fabs(phi))
+          ? math::sgn(phi) * this->_align_max
+          : phi;
+        double cohesion
+          = (this->_cohese_max < fabs(avg_heading))
+          ? math::sgn(avg_heading) * this->_cohese_max
+          : avg_heading;
+        this->_dtheta = cohesion + alignment;
       }
       else {
-	double neighbour_heading
-	  = this->neighbour_heading(swarm[nearest_neighbour]);
-	this->_dtheta
-	  = (this->_separate_max < fabs(neighbour_heading))
-	  ? math::sgn(neighbour_heading) * this->_separate_max
-	  : neighbour_heading;
+        double neighbour_heading
+          = this->neighbour_heading(swarm[nearest_neighbour]);
+        this->_dtheta
+          = (this->_separate_max < fabs(neighbour_heading))
+          ? math::sgn(neighbour_heading) * this->_separate_max
+          : neighbour_heading;
       }
     }
     else
@@ -183,7 +183,7 @@ namespace boids
     std::vector<int> neighbours;
     for (unsigned int i = 0; i < swarm.size(); ++i)
       if (this->is_in_fov(swarm[i]) && swarm[i]._index != this->_index)
-	neighbours.push_back(i);
+        neighbours.push_back(i);
     return neighbours;
   }
 
