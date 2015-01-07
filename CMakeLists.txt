@@ -2,12 +2,14 @@ cmake_minimum_required (VERSION 2.8.11)
 enable_testing()
 project (boids)
 
+include (CPack)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Gui REQUIRED)
 
-if (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -O3 -fPIC")
 endif ()
 if (CMAKE_COMPILER_IS_MSVC)
