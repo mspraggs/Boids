@@ -165,23 +165,6 @@ namespace boids
 
 
 
-  const double Boid::neighbour_heading(const Boid& boid) const
-  {
-    // Determines the heading of the specified boid
-    return this->point_heading(boid._r_x, boid._r_y);
-  }
-
-
-
-  const bool Boid::is_in_fov(const Boid& boid) const
-  {
-    // Determines whether the supplied boid is in the fov of this boid
-    return (this->neighbour_distance(boid) < this->_sight_range
-	    && fabs(this->neighbour_heading(boid)) < this->_view_angle);
-  }
-
-
-
   const bool Boid::rightof(const double x, const double y) const
   {
     // Determines whether the supplied boid is right of the current boid
@@ -189,15 +172,6 @@ namespace boids
     double dx = this->correct_x(this->_r_x - x);
     double dy = this->correct_y(this->_r_y - y);
     return this->_v_x * dy - this->_v_y * dx > 0;
-  }
-
-
-
-  const bool Boid::rightof(const Boid& boid) const
-  {
-    // Determines whether the supplied boid is right of the current boid
-    // or not
-    return this->rightof(boid._r_x, boid._r_y);
   }
 
 
@@ -221,39 +195,5 @@ namespace boids
     // of the world.
     this->_r_x = this->correct_x(this->_r_x);
     this->_r_y = this->correct_y(this->_r_y);
-  }
-
-  
-
-  const double Boid::correct_x(const double x) const
-  {
-    // Adjusts the supplied x component in accordance with the wrap-around
-    // geometry
-    return correct_coord(x, this->_x_span);
-  }
-
-
-
-  const double Boid::correct_y(const double y) const
-  {
-    // Adjusts the supplied y component in accordance with the wrap-around
-    // geometry
-    return correct_coord(y, this->_y_span);
-  }
-
-
-
-  const double Boid::v_theta() const
-  {
-    // Compute the angle sub-tended by the velocity vector and the x-axis
-    return compute_phi(this->_v_x, this->_v_y);
-  }
-
-
-
-  const double Boid::r_theta() const
-  {
-    // Compute the angle sub-tended by the position vector and the x-axis
-    return compute_phi(this->_r_x, this->_r_y);
   }
 }
