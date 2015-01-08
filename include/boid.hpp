@@ -70,13 +70,12 @@ namespace boids
     const double r_theta() const
     { return compute_phi(this->_r_x, this->_r_y); }
 
-    double _r_x, _r_y, _v_x, _v_y, _v_mag;
-    std::vector<double> _x_range, _y_range;
-    double _x_span, _y_span;
-    double _sight_range, _min_dist, _view_angle;
-    double _align_max, _cohese_max, _separate_max;
-    double _dtheta;
-    int _index;
+    Coord x_, v_;
+    double v_mag_;
+    World* world_;
+    double sight_range_, min_dist_, view_angle_;
+    double align_max_, cohese_max_, separate_max_;
+    double dtheta_;
   };
 }
 
