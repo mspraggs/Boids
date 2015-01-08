@@ -7,11 +7,20 @@ namespace boids
              const World* world, const double sight_range, const double min_dist,
              const double view_angle, const double align_max,
              const double cohese_max, const double separate_max)
-    : x_(x), forward_(forward), up_(up), v_mag_(v_mag), world_(world),
-      sight_range_(sight_range), min_dist_(min_dist), view_angle_(view_angle),
-      align_max_(align_max), cohese_max_(cohese_max),
-      separate_max_(separate_max)
+    : x_(x), v_mag_(v_mag), world_(world), sight_range_(sight_range),
+      min_dist_(min_dist), view_angle_(view_angle), align_max_(align_max),
+      cohese_max_(cohese_max), separate_max_(separate_max)
   {
+    // Assign and normalize boid orientation
+    this->forward_ = forward;
+    this->forward_.normalize();
+    this->up_ = up;
+    this->up_.normalize();
+    if (this->forward_.dot(this->up_) < 1e-8) {
+      Boid::Coord right = this->forward_.cross(this->up_);
+      this->up_ = right.cross(this->forward_);
+      this->up_.normalize();
+    }
   }
 
 
