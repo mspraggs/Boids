@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <Eigen/Dense>
+#include <Eigen/Geometry>
 
 #include <utils.hpp>
 #include <world.hpp>
