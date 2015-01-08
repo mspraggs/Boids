@@ -156,17 +156,6 @@ namespace boids
 
 
 
-  const bool Boid::rightof(const double x, const double y) const
-  {
-    // Determines whether the supplied boid is right of the current boid
-    // or not
-    double dx = this->correct_x(this->_r_x - x);
-    double dy = this->correct_y(this->_r_y - y);
-    return this->_v_x * dy - this->_v_y * dx > 0;
-  }
-
-
-
   const std::vector<int>
   Boid::get_neighbours(const std::vector<Boid>& swarm) const
   {

@@ -48,10 +48,7 @@ namespace boids
     // Determines whether the supplied boid is in the fov of this boid
     const bool is_in_fov(const Boid& boid) const
     { return (this->neighbour_distance(boid) < this->_sight_range
-              && fabs(this->neighbour_heading(boid)) < this->_view_angle); }
-    const bool rightof(const double x, const double y) const;
-    const bool rightof(const Boid& boid) const
-    { return this->rightof(boid._r_x, boid._r_y); }
+              && this->neighbour_phi(boid) < this->_view_angle); }
     const std::vector<int> get_neighbours(const std::vector<Boid>& swarm) const;
     const double v_mag() const
     { return math::magnitude(this->_v_x, this->_v_y); }
