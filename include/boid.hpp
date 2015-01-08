@@ -31,18 +31,11 @@ namespace boids
     void step_setup(const std::vector<Boid>& swarm);
     void step(const double dt);
 
-    const double r_x() const { return this->_r_x; } 
-    const double r_y() const { return this->_r_y; }
-    // Angle between velocity vector and x-axis
-    const double v_theta() const
-    { return compute_phi(this->_v_x, this->_v_y); }
-    const std::vector<double>& x_range() const { return this->_x_range; }
-    const std::vector<double>& y_range() const { return this->_y_range; }
-    const double x_span() const { return this->_x_span; }
-    const double y_span() const { return this->_y_span; }
-    const double min_dist() const { return this->_min_dist; }
-    const double sight_range() const { return this->_sight_range; }
-    const double view_angle() const { return this->_view_angle; }
+    Coord& get_x() const { return this->x_; }
+    Coord& get_forward() const { return this->forward_; }
+    const double min_dist() const { return this->min_dist_; }
+    const double sight_range() const { return this->sight_range_; }
+    const double view_angle() const { return this->view_angle_; }
 
   private:
     const double point_heading(const double x, const double y) const;
@@ -59,11 +52,6 @@ namespace boids
     const bool rightof(const Boid& boid) const
     { return this->rightof(boid._r_x, boid._r_y); }
     const std::vector<int> get_neighbours(const std::vector<Boid>& swarm) const;
-    void correct_coordinates();
-    const double correct_x(const double x) const
-    { return correct_coord(x, this->_x_span); }
-    const double correct_y(const double y) const
-    { return correct_coord(y, this->_y_span); }
     const double v_mag() const
     { return math::magnitude(this->_v_x, this->_v_y); }
     // Angle between position vector and x-axis
