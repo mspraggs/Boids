@@ -5,18 +5,24 @@
 #include <cmath>
 #include <vector>
 
+#include <Eigen/Dense>
+
 #include <utils.hpp>
+#include <world.hpp>
 
 namespace boids
 {
   class Boid
   {
   public:
-    Boid(const double x, const double y, const double heading,
-	 const double v_mag, const std::vector<double>& x_range,
-	 const std::vector<double>& y_range, const double sight_range,
-	 const double min_dist, const double view_angle, const double align_max,
-	 const double cohese_max, const double separate_max, const int index);
+
+    typedef Eigen::Vector3d Coord;
+
+    template <typename T>
+    Boid(const T& x, const T& forward, const T& up, const double v_mag,
+         const World* world, const double sight_range, const double min_dist,
+         const double view_angle, const double align_max,
+         const double cohese_max, const double separate_max);
     Boid(const Boid& boid);
     ~Boid();
 

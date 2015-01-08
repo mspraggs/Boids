@@ -1,34 +1,26 @@
 #include <boid.hpp>
 
 namespace boids
-{
-  Boid::Boid(const double x, const double y, const double heading,
-             const double v_mag, const std::vector<double>& x_range,
-             const std::vector<double>& y_range, const double sight_range,
-             const double min_dist, const double view_angle,
-             const double align_max, const double cohese_max,
-             const double separate_max, const int index)
-    : _r_x(x), _r_y(y), _v_mag(v_mag), _x_range(x_range), _y_range(y_range),
-      _sight_range(sight_range), _min_dist(min_dist), _view_angle(view_angle),
-    _align_max(align_max), _cohese_max(cohese_max),
-    _separate_max(separate_max), _index(index)
+{  
+  template <typename T>
+  Boid::Boid(const T& x, const T& forward, const T& up, const double v_mag,
+             const World* world, const double sight_range, const double min_dist,
+             const double view_angle, const double align_max,
+             const double cohese_max, const double separate_max)
+    : x_(x), forward_(forward), up_(up), v_mag_(v_mag), world_(world),
+      sight_range_(sight_range), min_dist_(min_dist), view_angle_(view_angle),
+      align_max_(align_max), cohese_max_(cohese_max),
+      separate_max_(separate_max)
   {
-    this->_x_span = x_range[1] - x_range[0];
-    this->_y_span = y_range[1] - y_range[0];
-    this->_v_x = cos(heading) * v_mag;
-    this->_v_y = sin(heading) * v_mag;
   }
 
 
   
   Boid::Boid(const Boid& boid)
-    : _r_x(boid._r_x), _r_y(boid._r_y), _v_x(boid._v_x), _v_y(boid._v_y), 
-      _v_mag(boid._v_mag), _x_range(boid._x_range), _y_range(boid._y_range),
-      _x_span(boid._x_span), _y_span(boid._y_span),
-      _sight_range(boid._sight_range), _min_dist(boid._min_dist),
-      _view_angle(boid._view_angle), _align_max(boid._align_max),
-      _cohese_max(boid._cohese_max), _separate_max(boid._separate_max),
-      _index(boid._index)
+    : x_(boid.x_), v_mag_(boid.v_mag_), world_(boid.world_),
+      sight_range_(boid.sight_range_), min_dist_(boid.min_dist_),
+      view_angle_(boid.view_angle_), align_max_(boid.align_max_),
+      cohese_max_(boid.cohese_max_), separate_max_(boid.separate_max_),
   {
     // Copy constructor
   }
@@ -46,20 +38,15 @@ namespace boids
   {
     // Copy assignment operator
     if (&rhs != this) {
-      this->_r_x = rhs._r_x;
-      this->_r_y = rhs._r_y;
-      this->_v_x = rhs._v_x;
-      this->_v_y = rhs._v_y;
-      this->_v_mag = rhs._v_mag;
-      this->_x_range = rhs._x_range;
-      this->_y_range = rhs._y_range;
-      this->_sight_range = rhs._sight_range;
-      this->_min_dist = rhs._min_dist;
-      this->_view_angle = rhs._view_angle;
-      this->_align_max = rhs._align_max;
-      this->_cohese_max = rhs._cohese_max;
-      this->_separate_max = rhs._separate_max;
-      this->_index = rhs._index;
+      this->x_ = rhs.x_;
+      this->v_mag_ = rhs.v_mag_;
+      this->world_ = rhs.world_;
+      this->sight_range_ = rhs.sight_range_;
+      this->min_dist_ = rhs.min_dist_;
+      this->view_angle_ = rhs.view_angle_;
+      this->align_max_ = rhs.align_max_;
+      this->cohese_max_ = rhs.cohese_max_;
+      this->separate_max_ = rhs.separate_max_;
     }
     return *this;
   }
