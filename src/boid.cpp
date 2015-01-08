@@ -101,12 +101,12 @@ namespace boids
         this->_dtheta = cohesion + alignment;
       }
       else {
-        double neighbour_heading
-          = this->neighbour_heading(swarm[nearest_neighbour]);
+        double neighbour_phi
+          = this->neighbour_phi(swarm[nearest_neighbour]);
         this->_dtheta
-          = (this->_separate_max < fabs(neighbour_heading))
-          ? math::sgn(neighbour_heading) * this->_separate_max
-          : neighbour_heading;
+          = (this->_separate_max < fabs(neighbour_phi))
+          ? math::sgn(neighbour_phi) * this->_separate_max
+          : neighbour_phi;
       }
     }
     else
@@ -132,17 +132,16 @@ namespace boids
 
 
 
-  const double Boid::point_heading(const double x, const double y) const
+  const double Boid::point_phi(const Boid::Coord& x) const
   {
-    // Determines the heading of the specified coordinate
-    double dx = this->correct_x(x - this->_r_x);
-    double dy = this->correct_y(y - this->_r_y);
-    double dot_prod = dx * this->_v_x + dy * this->_v_y;
-    double dr = math::magnitude(dx, dy);
+    // Determines the angle phi of point x in spherical coordinate system
+    // where direction of motion of this (forward_) is z-axis.
+    Boid::Coord diff = this->world_->point_diff(x, this->x_);
+    double dot_prod = this->forward_.dot(diff);
+    double dr = diff.norm();
     if (dr < 1e-10) return 0.0;
     double cos_alpha = dot_prod / (dr * this->_v_mag);
-    if (this->rightof(x, y)) return acos(cos_alpha);
-    else return -acos(cos_alpha);
+    return acos(cos_alpha);
   }
 
 

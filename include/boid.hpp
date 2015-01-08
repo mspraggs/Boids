@@ -39,11 +39,11 @@ namespace boids
     const double view_angle() const { return this->view_angle_; }
 
   private:
-    const double point_heading(const double x, const double y) const;
+    const double point_phi(const Coord& x) const;
     const double neighbour_distance(const Boid& boid) const;
-    const double neighbour_heading(const Boid& boid) const {
+    const double neighbour_phi(const Boid& boid) const {
       // Determine neighbour heading of specified boid
-      return this->point_heading(boid._r_x, boid._r_y);
+      return this->point_phi(boid.x_);
     }
     // Determines whether the supplied boid is in the fov of this boid
     const bool is_in_fov(const Boid& boid) const
