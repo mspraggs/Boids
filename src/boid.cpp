@@ -26,10 +26,11 @@ namespace boids
 
   
   Boid::Boid(const Boid& boid)
-    : x_(boid.x_), v_mag_(boid.v_mag_), world_(boid.world_),
-      sight_range_(boid.sight_range_), min_dist_(boid.min_dist_),
-      view_angle_(boid.view_angle_), align_max_(boid.align_max_),
-      cohese_max_(boid.cohese_max_), separate_max_(boid.separate_max_),
+    : x_(boid.x_), forward_(boid.forward_), up_(boid.up_), v_mag_(boid.v_mag_),
+      world_(boid.world_), sight_range_(boid.sight_range_),
+      min_dist_(boid.min_dist_), view_angle_(boid.view_angle_),
+      align_max_(boid.align_max_), cohese_max_(boid.cohese_max_),
+      separate_max_(boid.separate_max_),
   {
     // Copy constructor
   }
@@ -41,6 +42,8 @@ namespace boids
     // Copy assignment operator
     if (&rhs != this) {
       this->x_ = rhs.x_;
+      this->forward_ = rhs.forward_;
+      this->up_ = rhs.up_;
       this->v_mag_ = rhs.v_mag_;
       this->world_ = rhs.world_;
       this->sight_range_ = rhs.sight_range_;
