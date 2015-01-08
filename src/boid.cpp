@@ -174,7 +174,7 @@ namespace boids
     // Returns a list of indices of neighbours
     std::vector<int> neighbours;
     for (unsigned int i = 0; i < swarm.size(); ++i)
-      if (this->is_in_fov(swarm[i]) && swarm[i]._index != this->_index)
+      if (this->is_in_fov(swarm[i]) && &swarm[i] != this)
         neighbours.push_back(i);
     return neighbours;
   }
