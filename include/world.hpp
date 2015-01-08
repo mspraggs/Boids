@@ -25,6 +25,7 @@ namespace boids {
     World& operator=(const World& rhs);
 
     void correct_coord(Coord& coordinate) const;
+    Coord point_diff(const Coord& coord1, const Coord& coord2) const;
     double point_separation(const Coord& coord1, const Coord coord2) const;
     
   private:

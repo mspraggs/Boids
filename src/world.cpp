@@ -51,12 +51,21 @@ namespace boids {
 
 
 
+  World::Coord World::point_diff(const World::Coord& coord1,
+                                 const World::Coord& coord2) const
+  {
+    // Determine the difference between two points
+    Coord diff = coord2 - coord1;
+    this->correct_coord(diff);
+    return diff;
+  }
+
+
+
   double World::point_separation(const World::Coord& coord1,
                                  const World::Coord& coord2) const
   {
     // Determine the distance between the two supplied points
-    Coord diff = coord2 - coord1;
-    this->correct_coord(diff);
-    return diff.norm();
+    return this->point_diff(coord1, coord2).norm();
   }
 }
