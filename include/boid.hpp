@@ -24,7 +24,7 @@ namespace boids
          const double view_angle, const double align_max,
          const double cohese_max, const double separate_max);
     Boid(const Boid& boid);
-    ~Boid();
+    ~Boid() { };
 
     Boid& operator=(const Boid& rhs);
 

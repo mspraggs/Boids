@@ -27,13 +27,6 @@ namespace boids
 
 
 
-  Boid::~Boid()
-  {
-    // Empty destructor
-  }
-
-
-
   Boid& Boid::operator=(const Boid& rhs)
   {
     // Copy assignment operator
