@@ -178,14 +178,4 @@ namespace boids
         neighbours.push_back(i);
     return neighbours;
   }
-
-  
-  
-  void Boid::correct_coordinates()
-  {
-    // Adjusts the coordinates of the boid to account for the wrap-around nature
-    // of the world.
-    this->_r_x = this->correct_x(this->_r_x);
-    this->_r_y = this->correct_y(this->_r_y);
-  }
 }
