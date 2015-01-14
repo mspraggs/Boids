@@ -27,6 +27,8 @@ namespace boids {
     void correct_coord(Coord& coordinate) const;
     Coord point_diff(const Coord& coord1, const Coord& coord2) const;
     double point_separation(const Coord& coord1, const Coord coord2) const;
+    double max_distance() const
+    { return (this->upper_corner_ - this->lower_corner_).norm() / 2; }
     
   private:
     Coord lower_corner_;
