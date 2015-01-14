@@ -83,7 +83,7 @@ namespace boids
           net_dx += swarm[i].forward_;
           avg_x += swarm[i].x_;
         }
-        double net_phi = acos(this->forward_.dot(net_dx) / net_dx.norm());//this->point_phi(net_dx);
+        double net_phi = acos(this->forward_.dot(net_dx) / net_dx.norm());
         avg_x /= neighbours.size();
         double avg_phi = this->point_phi(avg_x);
         double alignment
@@ -104,7 +104,7 @@ namespace boids
         Coord neighbour_vector = swarm[nearest_neighbour].x_ - this->x_;
         this->step_matrix_
           = Eigen::AngleAxisd(separate,
-                              this->forward_.cross(neighbour_vector));
+                              -this->forward_.cross(neighbour_vector));
       }
     }
     else
