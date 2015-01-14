@@ -39,7 +39,7 @@ void RasterWindow::render(QPainter* painter)
     QTransform rotate;
     double phi = acos(x_axis.dot(boid.get_forward()));
     auto axis = boid.get_forward().cross(x_axis);
-    phi = (axis[2] > 0) ? phi : -phi;
+    phi = (axis[2] < 0) ? phi : -phi;
     rotate.rotateRadians(phi);
     QTransform translate;
     translate.translate(boid.get_x()[0], boid.get_x()[1]);
@@ -149,7 +149,7 @@ void RasterWindow::drawViewRange(QPainter* painter, const boids::Boid& boid,
   x_axis << 1, 0, 0;
   double phi = acos(x_axis.dot(boid.get_forward()));
   auto axis = boid.get_forward().cross(x_axis);
-  phi = (axis[2] > 0) ? phi : -phi;
+  phi = (axis[2] < 0) ? phi : -phi;
   painter->drawPie(rect,
 		   - 16 * 180.0 / boids::math::pi
 		   * (angle + phi),
