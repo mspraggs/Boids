@@ -14,7 +14,7 @@ public:
   explicit SwarmApplication(
     std::vector<boids::Boid>& swarm,
     const boids::World& world,
-    int argc, char* argv[])
+    int& argc, char* argv[])
     : QGuiApplication(argc, argv), swarm_(swarm), world_(world)
   { self = this; }
 
