@@ -112,6 +112,7 @@ namespace boids
           = (this->separate_max_ < neighbour_phi)
             ? this->separate_max_ : neighbour_phi;
         Coord neighbour_vector = swarm[nearest_neighbour].x_ - this->x_;
+        neighbour_vector.normalize();
         this->step_matrix_
           = Eigen::AngleAxisd(separate,
                               -this->forward_.cross(neighbour_vector));
