@@ -16,14 +16,15 @@ if (CMAKE_COMPILER_IS_MSVC)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O2 /Wall")
 endif ()
 
-set (SRC_DIR ${PROJECT_BINARY_DIR}/src)
-set (INC_DIR ${PROJECT_BINARY_DIR}/include)
-set (TEST_DIR ${PROJECT_BINARY_DIR}/tests)
+set (SRC_DIR src)
+set (INC_DIR include)
+set (TEST_DIR tests)
 
 file (GLOB
   lib_SRC
   ${SRC_DIR}/boid.cpp
-  ${SRC_DIR}/utils.cpp)
+  ${SRC_DIR}/utils.cpp
+  ${SRC_DIR}/world.cpp)
 
 file (GLOB
   exec_SRC
