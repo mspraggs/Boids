@@ -24,6 +24,10 @@ namespace boids {
     // Assignment operator
     World& operator=(const World& rhs);
 
+    Coord& get_lower_corner() const { return lower_corner_; }
+    Coord& get_upper_corner() const { return upper_corner_; }
+    Coord& get_dimensions() const {return dimensions_; }
+
     void correct_coord(Coord& coordinate) const;
     Coord point_diff(const Coord& coord1, const Coord& coord2) const;
     double point_separation(const Coord& coord1, const Coord coord2) const;
