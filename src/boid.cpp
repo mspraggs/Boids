@@ -1,7 +1,8 @@
 #include <boid.hpp>
 
 namespace boids
-{  
+{
+
   template <typename T>
   Boid::Boid(const T& x, const T& forward, const T& up, const double v_mag,
              const World* world, const double sight_range, const double min_dist,
@@ -66,7 +67,7 @@ namespace boids
     
     if (neighbours.size() > 0) {
       int nearest_neighbour = -1;
-      double min_dist = this->_x_span + this->_y_span;
+      double min_dist = this->world_->max_distance();
       for (int i : neighbours) {
         if (this->neighbour_distance(swarm[i]) < min_dist) {
           nearest_neighbour = i;
@@ -74,60 +75,61 @@ namespace boids
         }
       }
       
-      if (min_dist > this->_min_dist) {
-        double net_dx = 0.0;
+      if (min_dist > this->min_dist_) {
+        Coord net_dx = Coord::Zero(); // Net neighbour orientatation
+        Coord avg_x = Coord::Zero(); // Net neighbour coordinates
+        //double net_dx = 0.0;
         double net_dy = 0.0;
-        double avg_x = 0.0;
+        //double avg_x = 0.0;
         double avg_y = 0.0;
         
         for (int i : neighbours) {
-          net_dx += swarm[i]._v_x / swarm[i].v_mag();
-          net_dy += swarm[i]._v_y / swarm[i].v_mag();
-          avg_x += swarm[i]._r_x;
-          avg_y += swarm[i]._r_y;
+          net_dx += swarm[i].forward_;
+          avg_x += swarm[i].x_;
+          //net_dx += swarm[i]._v_x / swarm[i].v_mag();
+          //net_dy += swarm[i]._v_y / swarm[i].v_mag();
+          //avg_x += swarm[i]._r_x;
+          //avg_y += swarm[i]._r_y;
         }
-        double phi = compute_phi(net_dx, net_dy) - this->v_theta();
+        double net_phi = this->point_phi(net_dx);
         avg_x /= neighbours.size();
-        avg_y /= neighbours.size();
-        double avg_heading = this->point_heading(avg_x, avg_y);
+        //avg_y /= neighbours.size();
+        double avg_phi = this->point_phi(avg_x);
         double alignment
-          = (this->_align_max < fabs(phi))
-          ? math::sgn(phi) * this->_align_max
-          : phi;
+          = (this->align_max_ < net_phi) ? this->align_max_ : net_phi;
         double cohesion
-          = (this->_cohese_max < fabs(avg_heading))
-          ? math::sgn(avg_heading) * this->_cohese_max
-          : avg_heading;
-        this->_dtheta = cohesion + alignment;
+          = (this->cohese_max_ < avg_phi) ? this->cohese_max_ : avg_phi;
+        this->step_matrix_
+          = Eigen::AngleAxisd(cohesion,
+                              this->forward_.cross(avg_x).normalized())
+          * Eigen::AngleAxisd(alignment,
+                              this->forward_.cross(net_dx).normalized());
       }
       else {
-        double neighbour_phi
-          = this->neighbour_phi(swarm[nearest_neighbour]);
-        this->_dtheta
-          = (this->_separate_max < fabs(neighbour_phi))
-          ? math::sgn(neighbour_phi) * this->_separate_max
-          : neighbour_phi;
+        double neighbour_phi = this->neighbour_phi(swarm[nearest_neighbour]);
+        double separate
+          = (this->separate_max_ < neighbour_phi)
+            ? this->separate_max_ : neighbour_phi;
+        Coord neighbour_vector = swarm[nearest_neighbour].x_ - this->x_;
+        this->step_matrix_
+          = Eigen::AngleAxisd(separate,
+                              this->forward_.cross(neighbour_vector));
       }
     }
     else
-      this->_dtheta = 0.0;
+      this->step_matrix_ = Eigen::Matrix3d::Identity();
   }
 
 
 
   void Boid::step(const double dt)
   {
-    this->_v_x
-      = cos(this->_dtheta) * this->_v_x
-      - sin(this->_dtheta) * this->_v_y;
-    this->_v_y
-      = sin(this->_dtheta) * this->_v_x
-      + cos(this->_dtheta) * this->_v_y;
-    this->_v_x *= this->_v_mag / this->v_mag();
-    this->_v_y *= this->_v_mag / this->v_mag();
-    this->_r_x += this->_v_x * dt;
-    this->_r_y += this->_v_y * dt;
-    this->correct_coordinates();
+    this->forward_ = this->step_matrix_ * this->forward_;
+    this->up_ = this->step_matrix_ * this->up;
+    this->forward_.normalize();
+    this->up_.normalize();
+    this->x_ += this->forward_ * this->v_mag_ * dt;
+    this->world_->correct_coord(this->x_);
   }
 
 
@@ -140,18 +142,8 @@ namespace boids
     double dot_prod = this->forward_.dot(diff);
     double dr = diff.norm();
     if (dr < 1e-10) return 0.0;
-    double cos_alpha = dot_prod / (dr * this->_v_mag);
+    double cos_alpha = dot_prod / (dr * this->v_mag_);
     return acos(cos_alpha);
-  }
-
-
-
-  const double Boid::neighbour_distance(const Boid& boid) const
-  {
-    // Determines the distance to the specified neighbour
-    double dx = this->correct_x(boid._r_x - this->_r_x);
-    double dy = this->correct_y(boid._r_y - this->_r_y);
-    return math::magnitude(dx, dy);
   }
 
 
