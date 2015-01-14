@@ -3,11 +3,11 @@
 namespace boids
 {
 
-  template <typename T>
-  Boid::Boid(const T& x, const T& forward, const T& up, const double v_mag,
-             const World* world, const double sight_range, const double min_dist,
-             const double view_angle, const double align_max,
-             const double cohese_max, const double separate_max)
+  Boid::Boid(
+    const Boid::Coord& x, const Boid::Coord& forward, const Boid::Coord& up,
+    const double v_mag, const World* world, const double sight_range,
+    const double min_dist, const double view_angle, const double align_max,
+    const double cohese_max, const double separate_max)
     : x_(x), v_mag_(v_mag), world_(world), sight_range_(sight_range),
       min_dist_(min_dist), view_angle_(view_angle), align_max_(align_max),
       cohese_max_(cohese_max), separate_max_(separate_max)
@@ -31,7 +31,7 @@ namespace boids
       world_(boid.world_), sight_range_(boid.sight_range_),
       min_dist_(boid.min_dist_), view_angle_(boid.view_angle_),
       align_max_(boid.align_max_), cohese_max_(boid.cohese_max_),
-      separate_max_(boid.separate_max_),
+      separate_max_(boid.separate_max_)
   {
     // Copy constructor
   }
@@ -78,22 +78,13 @@ namespace boids
       if (min_dist > this->min_dist_) {
         Coord net_dx = Coord::Zero(); // Net neighbour orientatation
         Coord avg_x = Coord::Zero(); // Net neighbour coordinates
-        //double net_dx = 0.0;
-        double net_dy = 0.0;
-        //double avg_x = 0.0;
-        double avg_y = 0.0;
         
         for (int i : neighbours) {
           net_dx += swarm[i].forward_;
           avg_x += swarm[i].x_;
-          //net_dx += swarm[i]._v_x / swarm[i].v_mag();
-          //net_dy += swarm[i]._v_y / swarm[i].v_mag();
-          //avg_x += swarm[i]._r_x;
-          //avg_y += swarm[i]._r_y;
         }
         double net_phi = this->point_phi(net_dx);
         avg_x /= neighbours.size();
-        //avg_y /= neighbours.size();
         double avg_phi = this->point_phi(avg_x);
         double alignment
           = (this->align_max_ < net_phi) ? this->align_max_ : net_phi;
@@ -125,7 +116,7 @@ namespace boids
   void Boid::step(const double dt)
   {
     this->forward_ = this->step_matrix_ * this->forward_;
-    this->up_ = this->step_matrix_ * this->up;
+    this->up_ = this->step_matrix_ * this->up_;
     this->forward_.normalize();
     this->up_.normalize();
     this->x_ += this->forward_ * this->v_mag_ * dt;
