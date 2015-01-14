@@ -1,17 +1,15 @@
+#include <utils.hpp>
 #include <world.hpp>
 
 namespace boids {
-  template <typename T1, typename T2>
-  World::World(const T1& lower_corner, const T2& upper_corner)
-  {
-    // Assign the lower and upper corners from the supplied array-like
-    // variables
 
-    for (int i = 0; i < D; ++i) {
-      this->lower_corner_[i] = lower_corner[i];
-      this->upper_corner_[i] = upper_corner[i];
-    }
-    this->dimensions_ = this->upper_corner_ - this->lower_corner_;
+  World::World(
+    const World::Coord& lower_corner,
+    const World::Coord& upper_corner)
+  : lower_corner_(lower_corner), upper_corner_(upper_corner),
+  dimensions_(upper_corner - lower_corner)
+  {
+    // Constructor
   }
 
 
@@ -43,7 +41,7 @@ namespace boids {
   {
     // Correct coordinate for the world geometry
 
-    for (int i = 0; i < D; ++i) {
+    for (int i = 0; i < 3; ++i) {
       coord[i] = math::mod((coord[i] + this->dimensions_[i] / 2),
                            this->dimensions_[i]) - this->dimensions_[i] / 2;
     }
