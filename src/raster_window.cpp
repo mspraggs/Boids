@@ -1,42 +1,49 @@
 #include <raster_window.hpp>
 
 RasterWindow::RasterWindow(QWindow *parent)
-  : QWindow(parent), _update_pending(false)
+  : QWindow(parent), update_pending_(false)
 {
-  this->_backing_store = new QBackingStore(this);
+  this->backing_store_ = new QBackingStore(this);
 
-  this->_timer.start(10, this);
+  this->timer_.start(10, this);
 
   this->create();
   this->setGeometry(100, 100, 640, 640);
   
-  this->_boid_poly << QPointF(0, 0);
-  this->_boid_poly << QPointF(-5, -5);
-  this->_boid_poly << QPointF(10, 0);
-  this->_boid_poly << QPointF(-5, 5);
-  this->_boid_poly << QPointF(0, 0);
+  this->boid_poly_ << QPointF(0, 0);
+  this->boid_poly_ << QPointF(-5, -5);
+  this->boid_poly_ << QPointF(10, 0);
+  this->boid_poly_ << QPointF(-5, 5);
+  this->boid_poly_ << QPointF(0, 0);
 }
 
 
 
 void RasterWindow::render(QPainter* painter)
 {
-  std::vector<boids::Boid>& swarm = SwarmApplication::instance()->swarm;
+  auto& swarm = SwarmApplication::instance()->swarm_;
+  auto& world = SwarmApplication::instance()->world_;
 
-  double xscale = double(this->width()) / swarm[0].x_span();
-  double yscale = double(this->height()) / swarm[0].y_span();
+  double xscale = double(this->width()) / world.get_dimensions()[0];
+  double yscale = double(this->height()) / world.get_dimensions()[1];
 
   painter->translate(this->width() / 2, this->height() / 2);
   painter->scale(xscale, -yscale);
   QBrush brush(Qt::black);
   painter->setPen(QPen(brush, 0.5));
 
+  boids::Boid::Coord x_axis;
+  x_axis << 1.0, 0.0, 0.0;
+
   for (boids::Boid& boid : swarm) {
     QTransform rotate;
-    rotate.rotateRadians(boid.v_theta());
+    double phi = acos(x_axis.dot(boid.get_forward()));
+    auto axis = boid.get_forward().cross(x_axis);
+    phi = (axis[2] > 0) ? phi : -phi;
+    rotate.rotateRadians(phi);
     QTransform translate;
-    translate.translate(boid.r_x(), boid.r_y());
-    QPolygonF boid_poly = rotate.map(this->_boid_poly);
+    translate.translate(boid.get_x()[0], boid.get_x()[1]);
+    QPolygonF boid_poly = rotate.map(this->boid_poly_);
     boid_poly = translate.map(boid_poly);
     QPainterPath path;
     path.addPolygon(boid_poly);
@@ -55,8 +62,8 @@ void RasterWindow::render(QPainter* painter)
 
 void RasterWindow::renderLater()
 {
-  if (!this->_update_pending) {
-    this->_update_pending = true;
+  if (!this->update_pending_) {
+    this->update_pending_ = true;
     QCoreApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
   }
 }
@@ -69,25 +76,25 @@ void RasterWindow::renderNow()
     return;
   
   QRect rect(0, 0, this->width(), this->height());
-  this->_backing_store->beginPaint(rect);
+  this->backing_store_->beginPaint(rect);
 
-  QPaintDevice* device = this->_backing_store->paintDevice();
+  QPaintDevice* device = this->backing_store_->paintDevice();
   QPainter painter(device);
   
   painter.fillRect(0, 0, this->width(), this->height(), Qt::white);
   this->render(&painter);
 
-  this->_backing_store->endPaint();
-  this->_backing_store->flush(rect);
+  this->backing_store_->endPaint();
+  this->backing_store_->flush(rect);
 }
 
 
 
 void RasterWindow::updateSwarm()
 {
-  for (boids::Boid& boid : SwarmApplication::instance()->swarm)
-    boid.step_setup(SwarmApplication::instance()->swarm);
-  for (boids::Boid& boid : SwarmApplication::instance()->swarm)
+  for (boids::Boid& boid : SwarmApplication::instance()->swarm_)
+    boid.step_setup(SwarmApplication::instance()->swarm_);
+  for (boids::Boid& boid : SwarmApplication::instance()->swarm_)
     boid.step(0.01);
 }
 
@@ -96,7 +103,7 @@ void RasterWindow::updateSwarm()
 bool RasterWindow::event(QEvent* event)
 {
   if (event->type() == QEvent::UpdateRequest) {
-    this->_update_pending = false;
+    this->update_pending_ = false;
     this->renderNow();
     return true;
   }
@@ -107,7 +114,7 @@ bool RasterWindow::event(QEvent* event)
 
 void RasterWindow::resizeEvent(QResizeEvent* event)
 {
-  this->_backing_store->resize(event->size());
+  this->backing_store_->resize(event->size());
   if (this->isExposed())
     this->renderNow();
 }
@@ -124,7 +131,7 @@ void RasterWindow::exposeEvent(QExposeEvent* event)
 
 void RasterWindow::timerEvent(QTimerEvent* event)
 {
-  if (event->timerId() == this->_timer.timerId()) {
+  if (event->timerId() == this->timer_.timerId()) {
     this->updateSwarm();
     this->renderNow();
   }
@@ -137,9 +144,14 @@ void RasterWindow::timerEvent(QTimerEvent* event)
 void RasterWindow::drawViewRange(QPainter* painter, const boids::Boid& boid,
 				 const double angle, const double range)
 {  
-  QRectF rect(boid.r_x() - range, boid.r_y() - range, 2 * range, 2 * range);
+  QRectF rect(boid.get_x()[0] - range, boid.get_x()[1] - range, 2 * range, 2 * range);
+  boids::Boid::Coord x_axis;
+  x_axis << 1, 0, 0;
+  double phi = acos(x_axis.dot(boid.get_forward()));
+  auto axis = boid.get_forward().cross(x_axis);
+  phi = (axis[2] > 0) ? phi : -phi;
   painter->drawPie(rect,
 		   - 16 * 180.0 / boids::math::pi
-		   * (angle + boid.v_theta()),
+		   * (angle + phi),
 		   16 * 180.0 / boids::math::pi * 2 * angle);
 }

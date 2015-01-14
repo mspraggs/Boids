@@ -31,11 +31,11 @@ private:
   void drawViewRange(QPainter* painter, const boids::Boid& boid,
 		     const double angle, const double range);
 
-  QBackingStore* _backing_store;
-  bool _update_pending;
+  QBackingStore* backing_store_;
+  bool update_pending_;
 
-  QBasicTimer _timer;
-  QPolygonF _boid_poly;
+  QBasicTimer timer_;
+  QPolygonF boid_poly_;
 };
 
 #endif

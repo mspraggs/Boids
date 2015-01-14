@@ -5,10 +5,11 @@
 #include <boid.hpp>
 #include <raster_window.hpp>
 #include <swarm_application.hpp>
+#include <world.hpp>
 
 SwarmApplication* SwarmApplication::self = 0;
 
-std::vector<boids::Boid> create_swarm()
+std::vector<boids::Boid> create_swarm(const boids::World& world)
 {
   // RNG
   std::random_device rd;
@@ -35,13 +36,20 @@ std::vector<boids::Boid> create_swarm()
   
   // Initialize boids
   std::vector<boids::Boid> swarm;
+  boids::Boid::Coord x_axis;
+  x_axis << 1.0, 0.0, 0.0;
+  boids::Boid::Coord up;
+  up << 0.0, 0.0, 1.0;
   for (int i = 0; i < num_boids; ++i) {
-    double x = x_range[0] + (x_range[1] - x_range[0]) * unidist(generator);
-    double y = y_range[0] + (y_range[1] - y_range[0]) * unidist(generator);
+    boids::Boid::Coord random_coord
+      = world.get_lower_corner()
+        + boids::Boid::Coord::Random().cwiseProduct(world.get_dimensions());
+    random_coord[2] = 0.0;
     double phi = 2 * boids::math::pi * unidist(generator) - boids::math::pi;
-    swarm.push_back(boids::Boid(x, y, phi, v_mag, x_range, y_range, sight_range,
-				min_dist, view_angle, align_max, cohese_max,
-				separate_max, i));
+    boids::Boid::Coord forward = Eigen::AngleAxisd(phi, up) * x_axis;
+    swarm.push_back(boids::Boid(random_coord, forward, up, v_mag, &world, sight_range,
+                                min_dist, view_angle, align_max, cohese_max,
+                                separate_max));
   }
 
   return swarm;
@@ -49,9 +57,11 @@ std::vector<boids::Boid> create_swarm()
 
 int main(int argc, char* argv[])
 {
-  std::vector<boids::Boid> swarm = create_swarm();
+  boids::World world(-200.0 * boids::Boid::Coord::Ones(),
+                     200.0 * boids::Boid::Coord::Ones());
+  std::vector<boids::Boid> swarm = create_swarm(world);
 
-  SwarmApplication app(swarm, argc, argv);
+  SwarmApplication app(swarm, world, argc, argv);
   RasterWindow win;
   win.show();
   return app.exec();
