@@ -83,7 +83,17 @@ namespace boids
           net_dx += swarm[i].forward_;
           avg_x += swarm[i].x_;
         }
-        double net_phi = acos(this->forward_.dot(net_dx) / net_dx.norm());
+        double cosphi = this->forward_.dot(net_dx) / net_dx.norm() / this->forward_.norm();
+        double net_phi;
+        if (cosphi > 1.0) {
+          net_phi = 0.0;
+        }
+        else if (cosphi < -1.0) {
+          net_phi = math::pi;
+        }
+        else {
+          net_phi = acos(cosphi);
+        }
         avg_x /= neighbours.size();
         double avg_phi = this->point_phi(avg_x);
         double alignment
