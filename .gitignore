@@ -1,21 +1,5 @@
-/boids-core_automoc.cpp
-/boids-shared_automoc.cpp
-/boids-static_automoc.cpp
-/boids-lib_automoc.cpp
-/boids_automoc.cpp
-# CMake stuff
-CMakeCache.txt
-CTestTestfile.cmake
-cmake_install.cmake
-CMakeFiles/*
-Makefile
-
-# Emacs files
-*~
-
-# Performance/benchmarking stuff
-perf.*
-*grind.*.out
+# Prerequisites
+*.d
 
 # Compiled Object files
 *.slo
@@ -23,10 +7,18 @@ perf.*
 *.o
 *.obj
 
+# Precompiled Headers
+*.gch
+*.pch
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
+
+# Fortran module files
+*.mod
+*.smod
 
 # Compiled Static libraries
 *.lai
@@ -38,4 +30,10 @@ perf.*
 *.exe
 *.out
 *.app
-boids
+
+# Out-of-source build files
+/build*
+
+# JetBrains directories
+/.idea
+/cmake-build-debug
