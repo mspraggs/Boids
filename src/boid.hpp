@@ -39,6 +39,8 @@ namespace boids
     const double sight_range() const { return this->sight_range_; }
     const double view_angle() const { return this->view_angle_; }
 
+    void add_observer(Boid& observer) { observers_.push_back(&observer); }
+
   private:
     const double point_phi(const Coord& x) const;
     const double neighbour_distance(const Boid& boid) const
@@ -62,6 +64,8 @@ namespace boids
     double sight_range_, min_dist_, view_angle_;
     double align_max_, cohese_max_, separate_max_;
     Eigen::Matrix3d step_matrix_;
+
+    std::vector<Boid*> observers_;
   };
 }
 
