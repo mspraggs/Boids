@@ -1,4 +1,4 @@
-#include <raster_window.hpp>
+#include "raster_window.hpp"
 
 RasterWindow::RasterWindow(QWindow *parent)
   : QWindow(parent), update_pending_(false)

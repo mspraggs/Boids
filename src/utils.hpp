@@ -5,8 +5,6 @@
 
 #include <Eigen/Dense>
 
-#include <boid.hpp>
-
 
 namespace boids
 {

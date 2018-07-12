@@ -8,8 +8,8 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 
-#include <utils.hpp>
-#include <world.hpp>
+#include "utils.hpp"
+#include "world.hpp"
 
 namespace boids
 {

@@ -1,4 +1,4 @@
-#include <utils.hpp>
+#include "utils.hpp"
 
 namespace boids {
   namespace math {

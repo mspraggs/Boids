@@ -2,10 +2,10 @@
 
 #include <QtGui>
 
-#include <boid.hpp>
-#include <raster_window.hpp>
-#include <swarm_application.hpp>
-#include <world.hpp>
+#include "boid.hpp"
+#include "raster_window.hpp"
+#include "swarm_application.hpp"
+#include "world.hpp"
 
 SwarmApplication* SwarmApplication::self = 0;
 

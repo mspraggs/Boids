@@ -5,7 +5,7 @@
 
 #include <QtGui>
 
-#include <boid.hpp>
+#include "boid.hpp"
 
 class SwarmApplication : public QGuiApplication
 {
